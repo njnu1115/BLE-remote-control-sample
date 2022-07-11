@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		634FFBC4287C568C0095CC73 /* UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634FFBC3287C568C0095CC73 /* UUID.swift */; };
 		63E3C7B2287B2606007BE142 /* NewsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E3C7B1287B2606007BE142 /* NewsApp.swift */; };
 		63E3C7B4287B2606007BE142 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E3C7B3287B2606007BE142 /* ContentView.swift */; };
 		63E3C7B6287B2607007BE142 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63E3C7B5287B2607007BE142 /* Assets.xcassets */; };
@@ -14,6 +15,7 @@
 		63E3C7C3287B2607007BE142 /* newsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E3C7C2287B2607007BE142 /* newsTests.swift */; };
 		63E3C7CD287B2607007BE142 /* newsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E3C7CC287B2607007BE142 /* newsUITests.swift */; };
 		63E3C7CF287B2607007BE142 /* newsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E3C7CE287B2607007BE142 /* newsUITestsLaunchTests.swift */; };
+		63E3C7DD287BCCF0007BE142 /* Bluetooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E3C7DC287BCCF0007BE142 /* Bluetooth.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		634FFBC3287C568C0095CC73 /* UUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUID.swift; sourceTree = "<group>"; };
 		63E3C7AE287B2606007BE142 /* news.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = news.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63E3C7B1287B2606007BE142 /* NewsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsApp.swift; sourceTree = "<group>"; };
 		63E3C7B3287B2606007BE142 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,6 +47,7 @@
 		63E3C7C8287B2607007BE142 /* newsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = newsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		63E3C7CC287B2607007BE142 /* newsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newsUITests.swift; sourceTree = "<group>"; };
 		63E3C7CE287B2607007BE142 /* newsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		63E3C7DC287BCCF0007BE142 /* Bluetooth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bluetooth.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,10 +98,12 @@
 		63E3C7B0287B2606007BE142 /* news */ = {
 			isa = PBXGroup;
 			children = (
-				63E3C7DB287BB448007BE142 /* Views */,
+				63E3C7B3287B2606007BE142 /* ContentView.swift */,
 				63E3C7B1287B2606007BE142 /* NewsApp.swift */,
 				63E3C7B5287B2607007BE142 /* Assets.xcassets */,
 				63E3C7B7287B2607007BE142 /* Preview Content */,
+				63E3C7DC287BCCF0007BE142 /* Bluetooth.swift */,
+				634FFBC3287C568C0095CC73 /* UUID.swift */,
 			);
 			path = news;
 			sourceTree = "<group>";
@@ -125,14 +131,6 @@
 				63E3C7CE287B2607007BE142 /* newsUITestsLaunchTests.swift */,
 			);
 			path = newsUITests;
-			sourceTree = "<group>";
-		};
-		63E3C7DB287BB448007BE142 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				63E3C7B3287B2606007BE142 /* ContentView.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,7 +263,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				634FFBC4287C568C0095CC73 /* UUID.swift in Sources */,
 				63E3C7B4287B2606007BE142 /* ContentView.swift in Sources */,
+				63E3C7DD287BCCF0007BE142 /* Bluetooth.swift in Sources */,
 				63E3C7B2287B2606007BE142 /* NewsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -353,7 +353,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -407,7 +407,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

@@ -1,10 +1,16 @@
 import SwiftUI
-import CoreBluetooth
+
 
 struct ContentView: View {
+    var bluetooth = Bluetooth.shared
     @State var change = false;
+    @State var presented: Bool = false
+    @State var isConnected: Bool = Bluetooth.shared.current != nil { didSet { if isConnected { presented.toggle() } } }
+    
     var body: some View {
         VStack(alignment: .center) {
+            if isConnected {            }
+            
             Button("Move Forward") {
                     self.change.toggle()
                 }.padding()
@@ -21,10 +27,9 @@ struct ContentView: View {
             Button("Move Backward") {
                 self.change.toggle()
             }.padding()
-        }
-        
-        
-        
+        }.onAppear{
+            bluetooth.startScanning()
+        }.onDisappear{ bluetooth.stopScanning() }
     }
 }
 
