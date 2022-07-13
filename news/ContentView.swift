@@ -12,23 +12,31 @@ struct ContentView: View {
             if isConnected {            }
             
             Button("Move Forward") {
-                    self.change.toggle()
-                }.padding()
+                bluetooth.send([0x0046]) //UTF-8 code for "F"
+            }
+            .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+            .border(Color.purple, width: 5)
             
             HStack {
                 Button("Move Left") {
-                    self.change.toggle()
-                }.padding()
+                    bluetooth.send([0x004C]) //UTF-8 code for "L"
+                }
+                .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                .border(Color.purple, width: 5)
             
                 Button("Move Right") {
-                    self.change.toggle()
-                }.padding()
+                    bluetooth.send([0x0052]) //UTF-8 code for "R"
+                }
+                .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                .border(Color.purple, width: 5)
             }
             Button("Move Backward") {
-                self.change.toggle()
-            }.padding()
+                bluetooth.send([0x0042]) //UTF-8 code for "B"
+            }
+            .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+            .border(Color.purple, width: 5)
         }.onAppear{
-            bluetooth.startScanning()
+            bluetooth.retrievePeripheral()
         }.onDisappear{ bluetooth.stopScanning() }
     }
 }
@@ -39,7 +47,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
-
-// 如果我想在App启动之后做BLE的scan，应该把代码放在这里，还是放在别的地方呢？
-// 如果放在这里的话，在以前UIKit的时候，是有ViewController.viewDidLoad(){}这个地方可以放置，那如今SwiftUI有对应的地方么？

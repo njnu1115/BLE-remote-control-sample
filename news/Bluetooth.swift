@@ -6,6 +6,7 @@
 //
 
 import CoreBluetooth
+import os
 
 protocol BluetoothProtocol {
     func state(state: Bluetooth.State)
@@ -47,8 +48,15 @@ final class Bluetooth: NSObject {
     
     func startScanning() {
         peripherals.removeAll()
+        manager?.scanForPeripherals(withServices: nil, options: nil)
+    }
+    
+    //Scanning for our device
+    func startScanningForP() {
+        peripherals.removeAll()
         manager?.scanForPeripherals(withServices: [PeppleService.serviceUUID], options: nil)
     }
+
     func stopScanning() {
         peripherals.removeAll()
         manager?.stopScan()
@@ -66,6 +74,22 @@ final class Bluetooth: NSObject {
         let rssi: Int
         let uuid: String
         let peripheral: CBPeripheral
+    }
+    
+    func retrievePeripheral() {
+        
+        let connectedPeripherals: [CBPeripheral] = (manager!.retrieveConnectedPeripherals(withServices: [PeppleService.serviceUUID]))
+        
+        os_log("Found connected Peripherals with transfer service: %@", connectedPeripherals)
+        
+        if let connectedPeripheral = connectedPeripherals.last {
+            os_log("Connecting to peripheral %@", connectedPeripheral)
+            manager!.connect(connectedPeripheral, options: nil)
+        } else {
+            // We were not connected to our counterpart, so start scanning
+            manager!.scanForPeripherals(withServices: [PeppleService.serviceUUID],
+                                               options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+        }
     }
 }
 
@@ -137,3 +161,4 @@ extension Bluetooth: CBPeripheralDelegate {
         delegate?.value(data: value)
     }
 }
+
