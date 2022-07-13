@@ -107,14 +107,24 @@ extension Bluetooth: CBCentralManagerDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        let uuid = String(describing: peripheral.identifier)
-        let filtered = peripherals.filter{$0.uuid == uuid}
-        if filtered.count == 0{
-            guard let _ = peripheral.name else { return }
-            let new = Device(id: peripherals.count, rssi: RSSI.intValue, uuid: uuid, peripheral: peripheral)
-            peripherals.append(new)
-            delegate?.list(list: peripherals)
+//        let uuid = String(describing: peripheral.identifier)
+//        let filtered = peripherals.filter{$0.uuid == uuid}
+//        if filtered.count == 0{
+//            guard let _ = peripheral.name else { return }
+//            let new = Device(id: peripherals.count, rssi: RSSI.intValue, uuid: uuid, peripheral: peripheral)
+//            peripherals.append(new)
+//            delegate?.list(list: peripherals)
+//        }
+        
+        guard RSSI.intValue >= -50
+            else {
+                os_log("Discovered perhiperal not in expected range, at %d", RSSI.intValue)
+                return
         }
+        
+        os_log("Discovered %s at %d", String(describing: peripheral.name), RSSI.intValue)
+        
+        manager!.connect(peripheral, options: nil)
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) { print(error!) }
@@ -123,10 +133,13 @@ extension Bluetooth: CBCentralManagerDelegate {
         state = .disconnected
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        os_log("Peripheral Connected")
         current = peripheral
         state = .connected
         peripheral.delegate = self
-        peripheral.discoverServices(nil)
+        manager!.stopScan()
+        os_log("Scanning stopped")
+        peripheral.discoverServices([PeppleService.serviceUUID])
     }
 }
 
@@ -134,7 +147,7 @@ extension Bluetooth: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         guard let services = peripheral.services else { return }
         for service in services {
-            peripheral.discoverCharacteristics(nil, for: service)
+            peripheral.discoverCharacteristics([PeppleService.characteristicUUID], for: service)
         }
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
