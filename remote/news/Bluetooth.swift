@@ -17,7 +17,8 @@ protocol BluetoothProtocol {
 final class Bluetooth: NSObject {
     static let shared = Bluetooth()
     var delegate: BluetoothProtocol?
-    
+
+    var discoveredPeripheral: CBPeripheral?
     var peripherals = [Device]()
     var current: CBPeripheral?
     var state: State = .unknown { didSet { delegate?.state(state: state) } }
@@ -84,53 +85,115 @@ final class Bluetooth: NSObject {
         
         if let connectedPeripheral = connectedPeripherals.last {
             os_log("Connecting to peripheral %@", connectedPeripheral)
+            self.discoveredPeripheral = connectedPeripheral
             manager!.connect(connectedPeripheral, options: nil)
         } else {
+            os_log("Didn't find car, start scaning")
             // We were not connected to our counterpart, so start scanning
             manager!.scanForPeripherals(withServices: [PeppleService.serviceUUID],
-                                               options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+                                        options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
         }
     }
+    
+    /*
+     *  Call this when things either go wrong, or you're done with the connection.
+     *  This cancels any subscriptions if there are any, or straight disconnects if not.
+     *  (didUpdateNotificationStateForCharacteristic will cancel the connection if a subscription is involved)
+     */
+    private func cleanup() {
+        // Don't do anything if we're not connected
+        guard let discoveredPeripheral = discoveredPeripheral,
+            case .connected = discoveredPeripheral.state else { return }
+        
+        for service in (discoveredPeripheral.services ?? [] as [CBService]) {
+            for characteristic in (service.characteristics ?? [] as [CBCharacteristic]) {
+                if characteristic.uuid == PeppleService.characteristicUUID && characteristic.isNotifying {
+                    // It is notifying, so unsubscribe
+                    self.discoveredPeripheral?.setNotifyValue(false, for: characteristic)
+                }
+            }
+        }
+        
+        // If we've gotten this far, we're connected, but we're not subscribed, so we just disconnect
+        manager!.cancelPeripheralConnection(discoveredPeripheral)
+    }
+
 }
 
 extension Bluetooth: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        switch manager?.state {
-        case .unknown: state = .unknown
-        case .resetting: state = .resetting
-        case .unsupported: state = .unsupported
-        case .unauthorized: state = .unauthorized
-        case .poweredOff: state = .poweredOff
-        case .poweredOn: state = .poweredOn
-        default: state = .error
+        switch central.state {
+        case .poweredOn:
+            // ... so start working with the peripheral
+            os_log("CBManager is powered on, now retrieve Peripherals")
+            retrievePeripheral()
+        case .poweredOff:
+            os_log("CBManager is not powered on")
+            // In a real app, you'd deal with all the states accordingly
+            return
+        case .resetting:
+            os_log("CBManager is resetting")
+            // In a real app, you'd deal with all the states accordingly
+            return
+        case .unauthorized:
+            // In a real app, you'd deal with all the states accordingly
+            if #available(iOS 13.0, *) {
+                switch central.authorization {
+                case .denied:
+                    os_log("You are not authorized to use Bluetooth")
+                case .restricted:
+                    os_log("Bluetooth is restricted")
+                default:
+                    os_log("Unexpected authorization")
+                }
+            } else {
+                // Fallback on earlier versions
+            }
+            return
+        case .unknown:
+            os_log("CBManager state is unknown")
+            // In a real app, you'd deal with all the states accordingly
+            return
+        case .unsupported:
+            os_log("Bluetooth is not supported on this device")
+            // In a real app, you'd deal with all the states accordingly
+            return
+        @unknown default:
+            os_log("A previously unknown central manager state occurred")
+            // In a real app, you'd deal with yet unknown cases that might occur in the future
+            return
         }
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-//        let uuid = String(describing: peripheral.identifier)
-//        let filtered = peripherals.filter{$0.uuid == uuid}
-//        if filtered.count == 0{
-//            guard let _ = peripheral.name else { return }
-//            let new = Device(id: peripherals.count, rssi: RSSI.intValue, uuid: uuid, peripheral: peripheral)
-//            peripherals.append(new)
-//            delegate?.list(list: peripherals)
-//        }
-        
-        guard RSSI.intValue >= -50
+        os_log(" advertisement data discovered")
+        guard RSSI.intValue >= -70
             else {
                 os_log("Discovered perhiperal not in expected range, at %d", RSSI.intValue)
                 return
         }
         
         os_log("Discovered %s at %d", String(describing: peripheral.name), RSSI.intValue)
-        
-        manager!.connect(peripheral, options: nil)
+        // Device is in range - have we already seen it?
+        if discoveredPeripheral != peripheral {
+            
+            // Save a local copy of the peripheral, so CoreBluetooth doesn't get rid of it.
+            discoveredPeripheral = peripheral
+            
+            // And finally, connect to the peripheral.
+            os_log("Connecting to perhiperal %@", peripheral)
+            manager!.connect(peripheral, options: nil)
+        }
     }
     
-    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) { print(error!) }
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        os_log("didFailToConnect, the error is: ")
+        print(error!)
+    }
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        current = nil
-        state = .disconnected
+        os_log("Perhiperal Disconnected")
+        discoveredPeripheral = nil
+        /// todo: shall we start scan again ?
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         os_log("Peripheral Connected")
@@ -145,6 +208,7 @@ extension Bluetooth: CBCentralManagerDelegate {
 
 extension Bluetooth: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        os_log("did discovere services ")
         guard let services = peripheral.services else { return }
         for service in services {
             peripheral.discoverCharacteristics([PeppleService.characteristicUUID], for: service)

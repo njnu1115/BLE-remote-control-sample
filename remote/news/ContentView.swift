@@ -1,5 +1,5 @@
 import SwiftUI
-
+import os
 
 struct ContentView: View {
     var bluetooth = Bluetooth.shared
@@ -36,8 +36,10 @@ struct ContentView: View {
             .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
             .border(Color.purple, width: 5)
         }.onAppear{
-            bluetooth.retrievePeripheral()
-        }.onDisappear{ bluetooth.stopScanning() }
+            os_log(" onAppear, init bluetooth ")
+        }.onDisappear{
+            os_log(" onDisappear, stop bluetooth scan ")
+            bluetooth.stopScanning() }
     }
 }
 
