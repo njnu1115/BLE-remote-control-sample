@@ -24,9 +24,7 @@ final class Bluetooth: NSObject {
     var state: State = .unknown { didSet { delegate?.state(state: state) } }
     
     private var manager: CBCentralManager?
-    private var readCharacteristic: CBCharacteristic?
-    private var writeCharacteristic: CBCharacteristic?
-    private var notifyCharacteristic: CBCharacteristic?
+    private var transferCharacteristic: CBCharacteristic?
     
     private override init() {
         super.init()
@@ -64,8 +62,9 @@ final class Bluetooth: NSObject {
     }
     
     func send(_ value: [UInt8]) {
-        guard let characteristic = writeCharacteristic else { return }
-        current?.writeValue(Data(value), for: characteristic, type: .withResponse)
+        os_log("sedning")
+        guard let characteristic = transferCharacteristic else { return }
+        current?.writeValue(Data(value), for: characteristic, type: .withoutResponse)
     }
     
     enum State { case unknown, resetting, unsupported, unauthorized, poweredOff, poweredOn, error, connected, disconnected }
@@ -216,19 +215,13 @@ extension Bluetooth: CBPeripheralDelegate {
     }
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
-        for characteristic in characteristics {
-            switch characteristic.properties {
-            case .read:
-                readCharacteristic = characteristic
-            case .write:
-                writeCharacteristic = characteristic
-            case .notify:
-                notifyCharacteristic = characteristic
-                peripheral.setNotifyValue(true, for: characteristic)
-            case .indicate: break //print("indicate")
-            case .broadcast: break //print("broadcast")
-            default: break
-            }
+
+        os_log(" characteristics discovered ")
+
+        for characteristic in characteristics where characteristic.uuid == PeppleService.characteristicUUID {
+            // If it is, subscribe to it
+            transferCharacteristic = characteristic
+            peripheral.setNotifyValue(true, for: characteristic)
         }
     }
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) { }
