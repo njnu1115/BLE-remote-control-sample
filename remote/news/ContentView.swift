@@ -12,9 +12,9 @@ struct ContentView: View {
             if isConnected {            }
             
             HStack{
-                Text("Bluetooth is \(isConnected ? "Available":"Unavailable")")
-                Image(systemName: isConnected ? "checkmark":"xmark")
-                    .foregroundColor(isConnected ?  .green:.red)
+//                Text("Bluetooth is \(isConnected ? "Available":"Unavailable")")
+//                Image(systemName: isConnected ? "checkmark":"xmark")
+//                    .foregroundColor(isConnected ?  .green:.red)
             }.font(.largeTitle)
             
             Button(action: {
