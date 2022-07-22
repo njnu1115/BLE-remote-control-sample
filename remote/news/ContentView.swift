@@ -11,6 +11,12 @@ struct ContentView: View {
         VStack(alignment: .center) {
             if isConnected {            }
             
+            HStack{
+                Text("Bluetooth is \(isConnected ? "Available":"Unavailable")")
+                Image(systemName: isConnected ? "checkmark":"xmark")
+                    .foregroundColor(isConnected ?  .green:.red)
+            }.font(.largeTitle)
+            
             Button(action: {
                 bluetooth.send([0x0046]) //UTF-8 code for "F"
                       }, label: {
