@@ -11,30 +11,39 @@ struct ContentView: View {
         VStack(alignment: .center) {
             if isConnected {            }
             
-            Button("Move Forward") {
+            Button(action: {
                 bluetooth.send([0x0046]) //UTF-8 code for "F"
-            }
-            .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
-            .border(Color.purple, width: 5)
+                      }, label: {
+                          Image("btn_forward")
+                              .resizable()
+                              .aspectRatio(contentMode: .fit)
+                      }).frame(width: 100, height: 100)
             
-            HStack {
-                Button("Move Left") {
-                    bluetooth.send([0x004C]) //UTF-8 code for "L"
-                }
-                .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
-                .border(Color.purple, width: 5)
+            HStack.init(alignment: .center, spacing: 100) {
+                Button(action: {
+                bluetooth.send([0x004C])  //UTF-8 code for "F"
+                      }, label: {
+                          Image("btn_left")
+                              .resizable()
+                              .aspectRatio(contentMode: .fit)
+                      }).frame(width: 100, height: 100)
+                Button(action: {
+                bluetooth.send([0x0052])  //UTF-8 code for "F"
+                      }, label: {
+                          Image("btn_right")
+                              .resizable()
+                              .aspectRatio(contentMode: .fit)
+                      }).frame(width: 100, height: 100)
+            }
+            Button(action: {
+            bluetooth.send([0x0042])  //UTF-8 code for "F"
+                  }, label: {
+                      Image("btn_backward")
+                          .resizable()
+                          .aspectRatio(contentMode: .fit)
+                  }).frame(width: 100, height: 100)
             
-                Button("Move Right") {
-                    bluetooth.send([0x0052]) //UTF-8 code for "R"
-                }
-                .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
-                .border(Color.purple, width: 5)
-            }
-            Button("Move Backward") {
-                bluetooth.send([0x0042]) //UTF-8 code for "B"
-            }
-            .frame(width: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
-            .border(Color.purple, width: 5)
+            
         }.onAppear{
             os_log(" onAppear, init bluetooth ")
         }.onDisappear{

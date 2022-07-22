@@ -136,17 +136,13 @@ extension Bluetooth: CBCentralManagerDelegate {
             return
         case .unauthorized:
             // In a real app, you'd deal with all the states accordingly
-            if #available(iOS 13.0, *) {
-                switch central.authorization {
-                case .denied:
-                    os_log("You are not authorized to use Bluetooth")
-                case .restricted:
-                    os_log("Bluetooth is restricted")
-                default:
-                    os_log("Unexpected authorization")
-                }
-            } else {
-                // Fallback on earlier versions
+            switch CBCentralManager.authorization {
+            case .denied:
+                os_log("You are not authorized to use Bluetooth")
+            case .restricted:
+                os_log("Bluetooth is restricted")
+            default:
+                os_log("Unexpected authorization")
             }
             return
         case .unknown:
