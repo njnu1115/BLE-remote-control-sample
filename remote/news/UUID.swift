@@ -9,6 +9,6 @@ import Foundation
 import CoreBluetooth
 
 struct PeppleService {
-    static let serviceUUID = CBUUID(string: "701FD132-DE43-4051-B3B1-D8BE1479001B")
-    static let characteristicUUID = CBUUID(string: "CCE8A2BE-4769-464F-924B-D6092DD31D4D")
+    static let serviceUUID = CBUUID(string: "0000D132-0000-1000-8000-00805F9B34FB")
+    static let characteristicUUID = CBUUID(string: "0000A2BE-0000-1000-8000-00805F9B34FB")
 }
