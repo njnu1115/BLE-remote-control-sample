@@ -162,7 +162,7 @@ extension Bluetooth: CBCentralManagerDelegate {
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         os_log(" advertisement data discovered")
-        guard RSSI.intValue >= -70
+        guard RSSI.intValue >= -90
             else {
                 os_log("Discovered perhiperal not in expected range, at %d", RSSI.intValue)
                 return
