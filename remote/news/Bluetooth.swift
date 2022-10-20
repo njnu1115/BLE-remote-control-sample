@@ -62,7 +62,7 @@ final class Bluetooth: NSObject {
     }
     
     func send(_ value: [UInt8]) {
-        os_log("sedning")
+        os_log("sending")
         guard let characteristic = transferCharacteristic else { return }
         current?.writeValue(Data(value), for: characteristic, type: .withoutResponse)
     }
