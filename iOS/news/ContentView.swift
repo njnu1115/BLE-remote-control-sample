@@ -7,52 +7,66 @@ struct ContentView: View {
     @State var presented: Bool = false
     @State var isConnected: Bool = Bluetooth.shared.current != nil { didSet { if isConnected { presented.toggle() } } }
     
-    @State private var gear = 0
-    @State private var mode: String = "Standby"
-    @State private var battery: Int8 = 89
-    @State private var speed: Int8 = 5
+    @State private var muleMode: String = "Standby"
+    @State private var muleErrorMsg: String = "This is the error message for test purpose"
+    @State private var muleBattery: Int8 = 89
+    @State private var muleSpeed: Int8 = 5
+    @State private var muleSafeSwitch: Bool = false
     
-    @State var speedValueLeft:CGFloat = 0
-    @State var speedValueRight:CGFloat = 0
+    
+    @State var muleSpeedValue:CGFloat = 0
+    @State var muleSpeedDifferential:CGFloat = 0
     
     var body: some View {
         HStack(alignment: .center) {
             VStack(alignment: .center) {  //左半边
                 
-                Text("Mode: \(mode)\nBattery: \(battery)%\nSpeed: \(speed) mph")
+                Text("Mode: \(muleMode)\nBattery: \(muleBattery)%\nSpeed: \(muleSpeed) mph\n\(muleErrorMsg)")
                 //.font(.title)              //设置字体
-                    .minimumScaleFactor(0.5)     //字体自适应大小
+                    .minimumScaleFactor(0.3)     //字体自适应大小
                 //.lineLimit(10)  //限制行数
                 //  .background(Color(UIColor(red:103/255,green:231/255,blue:154/255, alpha: 0.1)))         //背景色
                     .foregroundColor(.black)        //字体颜色
-                    .lineSpacing(8)                 //行间距
-                    .padding(.all, 10)              //外间距
+                    .lineSpacing(4)                 //行间距
+                    .padding(.all, 4)              //外间距
                 //  .border(Color.red, width: 5)   //边框
-                    .frame(width: 300, height: 200, alignment: .center)     //设置尺寸
+                    .frame(width: 300, height: 120, alignment: .center)     //设置尺寸
                 
-                Slider(value: $speedValueLeft, in: 0 ... 100, step: 5){
-                    Text("Speed")
+                Slider(value: $muleSpeedValue, in: 0 ... 100, step: 5){
+                    Text("Text")
                 } minimumValueLabel: {
                     Text("Speed: 0")
                 } maximumValueLabel: {
                     Text("5")
                 }
+                Text("Speed is \(String(format:"%.2f", 5*muleSpeedValue/100))")
                 
-                Slider(value: $speedValueRight, in: 0 ... 100, step: 5){
-                    Text("Speed")
+                
+                Slider(value: $muleSpeedDifferential, in: 0 ... 100, step: 5){
+                    Text("muleSpeedDifferential")
                 } minimumValueLabel: {
                     Text("0%")
                 } maximumValueLabel: {
                     Text("100%")
                 }
+                Text("Differential is \(String(format:"%.1f", muleSpeedDifferential))")
+                
+                
                 Button(action: {
-                    bluetooth.send([0 == gear ? 0x0044 : 0x0045])
                 }, label: {
                     Image("btn_off")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                }).frame(width: 100, height: 100)
-
+                }).frame(width: 80, height: 80)
+                    .background(!muleSafeSwitch ?
+                                Color(UIColor.red) :
+                                    Color(UIColor.green))
+                    .pressAction {
+                        muleSafeSwitch = true
+                    } onRelease: {
+                        muleSafeSwitch = false
+                    }
+                
             }
             
             
@@ -61,7 +75,10 @@ struct ContentView: View {
                     
                     VStack(alignment: .center) { //第一列
                         Button(action: {
-                            bluetooth.send([0 == gear ? 0x0044 : 0x0045])
+                            if(muleSafeSwitch){
+                                let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x0045]
+                                bluetooth.send(payload)
+                            }
                         }, label: {
                             Image("btn_315")
                                 .resizable()
@@ -69,14 +86,14 @@ struct ContentView: View {
                         }).frame(width: 100, height: 100)
                         
                         Button(action: {
-                            bluetooth.send([0 == gear ? 0x0044 : 0x0045])
+                            bluetooth.send([0x0045])
                         }, label: {
-                            Image("btn_sync")
+                            Image("btn_sync_left")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
                         Button(action: {
-                            bluetooth.send([0 == gear ? 0x0044 : 0x0045])
+                            bluetooth.send([0x0045])
                         }, label: {
                             Image("btn_225")
                                 .resizable()
@@ -85,7 +102,7 @@ struct ContentView: View {
                     }
                     VStack(alignment: .center) { //第二列
                         Button(action: {
-                            bluetooth.send([0 == gear ? 0x0044 : 0x0045])
+                            bluetooth.send([ 0x0045])
                         }, label: {
                             Image("btn_forward")
                                 .resizable()
@@ -94,7 +111,7 @@ struct ContentView: View {
                         
                         Spacer()
                         Button(action: {
-                            bluetooth.send([0 == gear ? 0x0044 : 0x0045])
+                            bluetooth.send([0x0045])
                         }, label: {
                             Image("btn_backward")
                                 .resizable()
@@ -104,7 +121,7 @@ struct ContentView: View {
                     
                     VStack(alignment: .center) {//第三列
                         Button(action: {
-                            bluetooth.send([0 == gear ? 0x0044 : 0x0045])
+                            bluetooth.send([ 0x0045])
                         }, label: {
                             Image("btn_45")
                                 .resizable()
@@ -112,14 +129,14 @@ struct ContentView: View {
                         }).frame(width: 100, height: 100)
                         
                         Button(action: {
-                            bluetooth.send([0 == gear ? 0x0044 : 0x0045])
+                            bluetooth.send([ 0x0045])
                         }, label: {
-                            Image("btn_sync")
+                            Image("btn_sync_right")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
                         Button(action: {
-                            bluetooth.send([0 == gear ? 0x0044 : 0x0045])
+                            bluetooth.send([0x0045])
                         }, label: {
                             Image("btn_135")
                                 .resizable()

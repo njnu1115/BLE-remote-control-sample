@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		630C44AF29058C6400852082 /* PressActionsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 630C44AE29058C6400852082 /* PressActionsModifier.swift */; };
 		634FFBC4287C568C0095CC73 /* UUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634FFBC3287C568C0095CC73 /* UUID.swift */; };
 		63E3C7B2287B2606007BE142 /* NewsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E3C7B1287B2606007BE142 /* NewsApp.swift */; };
 		63E3C7B4287B2606007BE142 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E3C7B3287B2606007BE142 /* ContentView.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		630C44AE29058C6400852082 /* PressActionsModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressActionsModifier.swift; sourceTree = "<group>"; };
 		634FFBC3287C568C0095CC73 /* UUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUID.swift; sourceTree = "<group>"; };
 		63E3C7AE287B2606007BE142 /* news.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = news.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63E3C7B1287B2606007BE142 /* NewsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsApp.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				63E3C7B3287B2606007BE142 /* ContentView.swift */,
+				630C44AE29058C6400852082 /* PressActionsModifier.swift */,
 				63E3C7B1287B2606007BE142 /* NewsApp.swift */,
 				63E3C7B5287B2607007BE142 /* Assets.xcassets */,
 				63E3C7B7287B2607007BE142 /* Preview Content */,
@@ -264,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				634FFBC4287C568C0095CC73 /* UUID.swift in Sources */,
+				630C44AF29058C6400852082 /* PressActionsModifier.swift in Sources */,
 				63E3C7B4287B2606007BE142 /* ContentView.swift in Sources */,
 				63E3C7DD287BCCF0007BE142 /* Bluetooth.swift in Sources */,
 				63E3C7B2287B2606007BE142 /* NewsApp.swift in Sources */,
