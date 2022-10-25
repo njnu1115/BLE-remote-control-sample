@@ -65,6 +65,8 @@ struct ContentView: View {
                         muleSafeSwitch = true
                     } onRelease: {
                         muleSafeSwitch = false
+                        let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x09] //0x09 means break
+                        bluetooth.send(payload)
                     }
                 
             }
