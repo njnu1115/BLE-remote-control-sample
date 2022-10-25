@@ -76,7 +76,7 @@ struct ContentView: View {
                     VStack(alignment: .center) { //第一列
                         Button(action: {
                             if(muleSafeSwitch){
-                                let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x0045]
+                                let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x05]
                                 bluetooth.send(payload)
                             }
                         }, label: {
@@ -86,14 +86,16 @@ struct ContentView: View {
                         }).frame(width: 100, height: 100)
                         
                         Button(action: {
-                            bluetooth.send([0x0045])
+                            let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x03]
+                            bluetooth.send(payload)
                         }, label: {
                             Image("btn_sync_left")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
                         Button(action: {
-                            bluetooth.send([0x0045])
+                            let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x07]
+                            bluetooth.send(payload)
                         }, label: {
                             Image("btn_225")
                                 .resizable()
@@ -102,7 +104,8 @@ struct ContentView: View {
                     }
                     VStack(alignment: .center) { //第二列
                         Button(action: {
-                            bluetooth.send([ 0x0045])
+                            let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x01]
+                            bluetooth.send(payload)
                         }, label: {
                             Image("btn_forward")
                                 .resizable()
@@ -111,7 +114,8 @@ struct ContentView: View {
                         
                         Spacer()
                         Button(action: {
-                            bluetooth.send([0x0045])
+                            let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x02]
+                            bluetooth.send(payload)
                         }, label: {
                             Image("btn_backward")
                                 .resizable()
@@ -121,7 +125,8 @@ struct ContentView: View {
                     
                     VStack(alignment: .center) {//第三列
                         Button(action: {
-                            bluetooth.send([ 0x0045])
+                            let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x06]
+                            bluetooth.send(payload)
                         }, label: {
                             Image("btn_45")
                                 .resizable()
@@ -129,14 +134,16 @@ struct ContentView: View {
                         }).frame(width: 100, height: 100)
                         
                         Button(action: {
-                            bluetooth.send([ 0x0045])
+                            let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x04]
+                            bluetooth.send(payload)
                         }, label: {
                             Image("btn_sync_right")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
                         Button(action: {
-                            bluetooth.send([0x0045])
+                            let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x08]
+                            bluetooth.send(payload)
                         }, label: {
                             Image("btn_135")
                                 .resizable()
