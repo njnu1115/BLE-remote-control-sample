@@ -42,7 +42,7 @@ struct ContentView: View {
                 Text("Speed is \(String(format:"%.2f", 5*muleSpeedValue/100))")
                 
                 
-                Slider(value: $muleSpeedDifferential, in: 0 ... 100, step: 5){
+                Slider(value: $muleSpeedDifferential, in: 0 ... 100, step: 10){
                     Text("muleSpeedDifferential")
                 } minimumValueLabel: {
                     Text("0%")
