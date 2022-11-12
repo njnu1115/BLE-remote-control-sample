@@ -76,97 +76,148 @@ struct ContentView: View {
                 HStack.init(alignment: .center, spacing: 20) {
                     
                     VStack(alignment: .center) { //第一列
-                        Button(action: {
-                            if(muleSafeSwitch){
-                                let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x05]
-                                bluetooth.send(payload)
-                            }
-                        }, label: {
-                            Image("btn_315")
+                        
+                        Button(action: {}, label: {Image("btn_315")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
-                        
-                        Button(action: {
-                            if(muleSafeSwitch){
-                                let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x03]
-                                bluetooth.send(payload)
+                            .pressAction {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x05]
+                                    bluetooth.send(payload)
+                                }
+                            } onRelease: {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [0x00, 0x00, 0x09] //0x09 means break
+                                    bluetooth.send(payload)
+                                }
                             }
-                        }, label: {
+                        
+                        Button(action: {}, label: {
                             Image("btn_sync_left")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
-                        Button(action: {
-                            if(muleSafeSwitch){
-                                let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x07]
-                                bluetooth.send(payload)
+                            .pressAction {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x03]
+                                    bluetooth.send(payload)
+                                }
+                            } onRelease: {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [0x00, 0x00, 0x09] //0x09 means break
+                                    bluetooth.send(payload)
+                                }
                             }
-                        }, label: {
+                        
+                        Button(action: {}, label: {
                             Image("btn_225")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
-                    }
-                    VStack(alignment: .center) { //第二列
-                        Button(action: {
-                            if(muleSafeSwitch){
-                                let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x01]
-                                bluetooth.send(payload)
+                            .pressAction {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x07]
+                                    bluetooth.send(payload)
+                                }
+                            } onRelease: {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [0x00, 0x00, 0x09] //0x09 means break
+                                    bluetooth.send(payload)
+                                }
                             }
-                        }, label: {
+                    }
+                    
+                    VStack(alignment: .center) { //第二列
+                        
+                        Button(action: {}, label: {
                             Image("btn_forward")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
+                            .pressAction {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x01]
+                                    bluetooth.send(payload)
+                                }
+                            } onRelease: {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [0x00, 0x00, 0x09] //0x09 means break
+                                    bluetooth.send(payload)
+                                }
+                            }
                         
                         Spacer()
-                        Button(action: {
-                            if(muleSafeSwitch){
-                                let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x02]
-                                bluetooth.send(payload)
-                            }
-                        }, label: {
+                        Button(action: {}, label: {
                             Image("btn_backward")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
+                            .pressAction {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x02]
+                                    bluetooth.send(payload)
+                                }
+                            } onRelease: {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [0x00, 0x00, 0x09] //0x09 means break
+                                    bluetooth.send(payload)
+                                }
+                            }
                     }
                     
                     VStack(alignment: .center) {//第三列
-                        Button(action: {
-                            if(muleSafeSwitch){
-                                let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x06]
-                                bluetooth.send(payload)
-                            }
-                        }, label: {
+                        Button(action: {}, label: {
                             Image("btn_45")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
-                        
-                        Button(action: {
-                            if(muleSafeSwitch){
-                                let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x04]
-                                bluetooth.send(payload)
+                            .pressAction {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x06]
+                                    bluetooth.send(payload)
+                                }
+                            } onRelease: {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [0x00, 0x00, 0x09] //0x09 means break
+                                    bluetooth.send(payload)
+                                }
                             }
-                        }, label: {
+                        
+                        Button(action: {}, label: {
                             Image("btn_sync_right")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
-                        Button(action: {
-                            if(muleSafeSwitch){
-                                let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x08]
-                                bluetooth.send(payload)
+                            .pressAction {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x04]
+                                    bluetooth.send(payload)
+                                }
+                            } onRelease: {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [0x00, 0x00, 0x09] //0x09 means break
+                                    bluetooth.send(payload)
+                                }
                             }
-                        }, label: {
+                        
+                        Button(action: {}, label: {
                             Image("btn_135")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         }).frame(width: 100, height: 100)
+                            .pressAction {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [UInt8(muleSpeedValue), UInt8(muleSpeedDifferential), 0x08]
+                                    bluetooth.send(payload)
+                                }
+                            } onRelease: {
+                                if(muleSafeSwitch){
+                                    let payload : [UInt8] = [0x00, 0x00, 0x09] //0x09 means break
+                                    bluetooth.send(payload)
+                                }
+                            }
                     }
-                    
                 }
             }
         }.onAppear{
